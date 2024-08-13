@@ -1,17 +1,17 @@
 <h1>Bulk Subnet Pinger - Fping</h1>
 
-This script will use a source txt document and run fping -g | grep alive for each inserted subnet.
+<li>This script will use a source txt document and run fping -g | grep alive for each inserted subnet.</li
 
-The output of this script will only show Alive IPs, no ICMP host timeouts or other data will be displayed.
+<li>The output of this script will only show Alive IPs, no ICMP host timeouts or other data will be displayed.</li
 
 <h2> Operational instructions </h2>
 
 <ol>
 <li> Open subnets.txt and insert the subnets you wish to check. Accepted format is: </li>
 <b>
-subnet 1
-subnet 2
-subnet 3
+<li> subnet 1 </li>
+<li> subnet 2 </li>
+<li> subnet 3 </li>
 </b>
 <li> Make sure it's saved by pressint CTRL + S (May vary on text editor) </li>
 <li> Open a terminal and run python check_alive_hosts.py </li>
@@ -20,12 +20,12 @@ subnet 3
 
 <h2> Dependencies </h2>
 
-A Linux Terminal (Native or WSL)
-Fping - Can be installed via this command on Ubuntu:
-sudo apt install fping
-Python. or the Python3 package - Can be installed via this command on Ubuntu:
-sudo apt install python
-OR
-sudo apt install python3
+<li>A Linux Terminal (Native or WSL)</li>
+<li><b>Fping</b> - Can be installed via this command on Ubuntu:</li>
+<li>sudo apt install fping</li>
+<li><b>Python</b>. or the </b>Python3</b> package - Can be installed via this command on Ubuntu:</li>
+<li>sudo apt install python</li>
+<li>OR
+<li>sudo apt install python3</li>
 
 If there are any adjustments or neccesary changes, please let me know.
