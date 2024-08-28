@@ -1,4 +1,5 @@
 import subprocess
+import time
 
 # Input file with subnets
 input_file = 'subnets.txt'
@@ -22,6 +23,9 @@ for subnet in subnets:
     try:
         # Run the fping command and capture the output
         result = subprocess.run(['fping', '-g', subnet], capture_output=True, text=True)
+        print(f"2s Delay to avoid ISP blocking")
+        time.sleep(2)
+        print(f"Delay over")
         
         # Filter the output for alive hosts
         alive_hosts = [line for line in result.stdout.splitlines() if "alive" in line]
@@ -32,6 +36,6 @@ for subnet in subnets:
                 f.write(host + '\n')
     
     except subprocess.CalledProcessError as e:
-        print(f"Error processing subnet {subnet}: {e}")
+        print(f"Error processing subnet, check syntax {subnet}: {e}")
 
-print(f"Results saved to {output_file}")
+print(f"Results saved to {output_file} if no IPs are inside the file, no alive IPs were found")
