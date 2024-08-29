@@ -23,7 +23,7 @@ A <b>Linux Terminal</b> (Native or WSL)
 
 <b>Python</b>. or the </b>Python3</b> package - Can be installed via this command on Ubuntu:
 
->sudo apt install python
+>sudo apt install python-is-python3
 
 OR
 

@@ -1,41 +1,55 @@
 import subprocess
 import time
+import os
+import sys
 
-# Input file with subnets
 input_file = 'subnets.txt'
 
-# Output file to store the results
 output_file = 'alive_hosts.txt'
 
-# Clear the output file if it exists
-with open(output_file, 'w') as f:
-    pass  # Opening the file in 'w' mode clears it
+if os.path.exists(output_file):
+    os.remove(output_file)
+    print(f"{output_file} has been deleted.")
 
-# Read each subnet from the input file
 with open(input_file, 'r') as file:
     subnets = file.readlines()
 
-# Loop through each subnet and run the fping command
+total_subnets = len(subnets)
+current_progress = 0
+
 for subnet in subnets:
-    subnet = subnet.strip()  # Remove any leading/trailing whitespace
-    print(f"Processing subnet: {subnet}")
+    subnet = subnet.strip()
+    if not subnet:
+        continue
+
+    print(f"\nProcessing subnet: {subnet}")
     
     try:
-        # Run the fping command and capture the output
         result = subprocess.run(['fping', '-g', subnet], capture_output=True, text=True)
-        print(f"2s Delay to avoid ISP blocking")
+        print("2s Delay to avoid ISP blocking")
         time.sleep(2)
-        print(f"Delay over")
         
-        # Filter the output for alive hosts
         alive_hosts = [line for line in result.stdout.splitlines() if "alive" in line]
         
-        # Append the alive hosts to the output file
+        if not alive_hosts:
+            print(f"No IPs were reachable in subnet {subnet}.")
+
         with open(output_file, 'a') as f:
             for host in alive_hosts:
                 f.write(host + '\n')
     
     except subprocess.CalledProcessError as e:
-        print(f"Error processing subnet, check syntax {subnet}: {e}")
+        print(f"Error processing subnet {subnet}. Please check the syntax: {e}")
+    except FileNotFoundError:
+        print(f"Error: The command 'fping' was not found. Make sure it is installed and accessible.")
 
-print(f"Results saved to {output_file} if no IPs are inside the file, no alive IPs were found")
+    current_progress += 1
+    progress_percentage = (current_progress / total_subnets) * 100
+    progress_bar_length = 50
+    filled_length = int(progress_bar_length * current_progress // total_subnets)
+    bar = '=' * filled_length + '-' * (progress_bar_length - filled_length)
+    sys.stdout.write(f'\rProgress: [{bar}] {progress_percentage:.2f}%')
+    sys.stdout.flush()
+    print("\n")
+
+print(f"\n\nResults saved to {output_file}")
